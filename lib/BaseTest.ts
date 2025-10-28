@@ -5,10 +5,12 @@ import { AlertsFrameWindowsPage } from '@pages/AlertsFrameWindowsPage';
 import { WidgetsPage } from '@pages/WidgetsPage';
 import { InteractionsPage } from '@pages/InteractionsPage';
 import { WebActions } from '@lib/WebActions';
+import { AssertionManager } from '@lib/AssertionManager';
 import AxeBuilder from '@axe-core/playwright';
 
 const test = baseTest.extend<{
     webActions: WebActions;
+    assertionManager: AssertionManager;
     loginPage: LoginPage;
     elementsPage: ElementsPage;
     alertsFrameWindowsPage: AlertsFrameWindowsPage;
@@ -19,6 +21,9 @@ const test = baseTest.extend<{
 }>({
     webActions: async ({ page, context }, use) => {
         await use(new WebActions(page, context));
+    },
+    assertionManager: async ({ page, context }, use) => {
+        await use(new AssertionManager(page, context));
     },
     loginPage: async ({ page, context }, use) => {
         await use(new LoginPage(page, context));
