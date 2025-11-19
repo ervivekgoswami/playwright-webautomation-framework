@@ -15,6 +15,7 @@
     "test:visual": "npx playwright test visualComparision.test.ts --project=Chrome",
     "test:device": "npx playwright test Emulation.test.ts --project=Device",
     "allure:generate": "allure generate --clean",
+    "allure:open": "allure open",
     "lighthouse": "node tests/lighthouse/Lighthouse.js",
     "test:accessibility": "npx playwright test Axe.test.ts --project=Chrome"
   },
