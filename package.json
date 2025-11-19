@@ -14,7 +14,7 @@
     "test:record": "npx playwright codegen",
     "test:visual": "npx playwright test visualComparision.test.ts --project=Chrome",
     "test:device": "npx playwright test Emulation.test.ts --project=Device",
-    "allureReport": "allure serve",
+    "allure:generate": "allure generate --clean",
     "lighthouse": "node tests/lighthouse/Lighthouse.js",
     "test:accessibility": "npx playwright test Axe.test.ts --project=Chrome"
   },

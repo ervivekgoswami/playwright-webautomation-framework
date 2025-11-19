@@ -16,8 +16,6 @@ jobs:
   build:
     # Specify the operating system for this job
     runs-on: ubuntu-latest
-    env:
-      SLACK_WEBHOOK_URL: ${{secrets.SLACK_WEBHOOK_URL}}
 
     # Define the steps to execute in this job
     steps:
@@ -41,7 +39,7 @@ jobs:
 
       # Step to run tests with qa as environment variable similarly we can define qa|dev|qaApi|devApi
       - name: Run tests
-        run: npm run test:serial
+        run: npm run test:single
         env:
           npm_config_ENV: "qa"
 
@@ -51,6 +49,39 @@ jobs:
         run: sleep 10s
         # This step should always run, even if previous steps fail
         if: always()
+
+      - name: AllureGenerate
+        if: always()
+        run: npm run allure:generate -- --clean
+
+
+      # OPTIONAL: keep artifact (if you still want zip)
+      - name: Upload Allure Report as artifact (zip)
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: AllureReport
+          path: allure-report/
+          retention-days: 3
+
+      # --- Publish to GitHub Pages ---
+      - name: Setup Pages (configure pages environment)
+        uses: actions/configure-pages@v4
+
+      - name: Package and upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: 'allure-report'   # path to generated static files
+
+      - name: Deploy to GitHub Pages
+        id: deploy
+        uses: actions/deploy-pages@v4
+
+      - name: Show Page URL
+        if: always()
+        run: |
+          echo "Pages deploy finished. Check the Actions 'Deploy to GitHub Pages' step for the published URL."
+          echo echo "::set-output name=artifact_url::https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}"
 
       # Check if HTML report exists
       - name: Check if HTML report exists
@@ -82,14 +113,4 @@ jobs:
       - name: Generate artifact link
         id: artifact_link
         run: echo "::set-output name=artifact_url::https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}"
-        if: always()
-
-      # Send Slack notification with html-reprt url once the tests are completed
-      - name: Send Slack notification
-        uses: rtCamp/action-slack-notify@v2
-        env:
-          SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK_URL }}
-          SLACK_CHANNEL: "#playwright-test-reports"
-          SLACK_USERNAME: Playwright GitHub Actions
-          SLACK_MESSAGE: "Test results are available in [Artifacts section](${{ steps.artifact_link.outputs.artifact_url }}) as html-report."
         if: always()

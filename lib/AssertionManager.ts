@@ -1,4 +1,4 @@
-import { Page, Locator, expect } from '@playwright/test';
+import test, { Page, Locator, expect } from '@playwright/test';
 import { BrowserContext } from '@playwright/test';
 
 export class AssertionManager {
@@ -146,8 +146,7 @@ export class AssertionManager {
         await expect(element, message).toHaveValue(expectedValue);
     }
 
-    /**
-     * Assert that an input element does not have a specific value
+    /*** Assert that an input element does not have a specific value
      */
     async assertInputNotValue(locator: string | Locator, unexpectedValue: string, message?: string): Promise<void> {
         const element = typeof locator === 'string' ? this.page.locator(locator) : locator;
@@ -424,5 +423,11 @@ export class AssertionManager {
     async assertResponseHeader(response: any, headerName: string, expectedValue: string, message?: string): Promise<void> {
         const headerValue = response.headers()[headerName.toLowerCase()];
         expect(headerValue, message || `Expected header ${headerName} to be ${expectedValue}, but got ${headerValue}`).toBe(expectedValue);
+    }
+
+    async takeScreenshot(snapshotName: string, options ?: { fullPage ?: boolean }): Promise<void> { 
+        const path = `screenshots/${snapshotName}_${Date.now()}.png`;
+        const screenprint = await this.page.screenshot({ path, fullPage: options ?. fullPage || false });
+        await test.info().attach(snapshotName, { body: screenprint, contentType: 'image/png' });
     }
 }
