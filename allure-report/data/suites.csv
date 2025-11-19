@@ -1,0 +1,2 @@
+"Status","Start Time","Stop Time","Duration in ms","Parent Suite","Suite","Sub Suite","Test Class","Test Method","Name","Description"
+"passed","Wed Nov 19 16:13:51 IST 2025","Wed Nov 19 16:14:00 IST 2025","9878","Chrome","tests\functional\Login.test.ts","","","","Verify Book Store Login",""

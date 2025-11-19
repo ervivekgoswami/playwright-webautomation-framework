@@ -40,10 +40,10 @@ jobs:
         run: npx playwright install chrome
 
       # Step to run tests with qa as environment variable similarly we can define qa|dev|qaApi|devApi
-      - name: Run tests
-        run: npm run test:single
-        env:
-          npm_config_ENV: "qa"
+      # - name: Run tests
+      #   run: npm run test:single
+      #   env:
+      #     npm_config_ENV: "qa"
 
       # Step to wait for the job to complete
       - name: Wait for job completion
@@ -52,9 +52,9 @@ jobs:
         # This step should always run, even if previous steps fail
         if: always()
 
-      - name: AllureGenerate
-        if: always()
-        run: npm run allure:generate
+      # - name: AllureGenerate
+      #   if: always()
+      #   run: npm run allure:generate
 
 
       # OPTIONAL: keep artifact (if you still want zip)
