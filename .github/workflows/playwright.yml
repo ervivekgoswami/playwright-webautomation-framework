@@ -14,7 +14,7 @@ permissions:
 # Define the jobs to run in this workflow
 jobs:
 
-run-tests-and-publish:
+  build:
   # Define a job named 'build'
   # Specify the operating system for this job
     runs-on: ubuntu-latest
