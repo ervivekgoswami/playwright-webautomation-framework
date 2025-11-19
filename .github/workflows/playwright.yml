@@ -24,8 +24,6 @@ jobs:
       # Step to checkout the source code from the repository
       - name: Checkout code
         uses: actions/checkout@v4
-        with:
-          ref: master
 
       # Step to set up the Node.js version
       - name: Install node js v20
